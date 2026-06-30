@@ -1,0 +1,16 @@
+﻿{% extends "base.html" %}
+{% block title %}{% if is_edit %}编辑{% else %}添加{% endif %}宿舍楼{% endblock %}
+{% block content %}
+<div class="card">
+    <h2>{% if is_edit %}编辑宿舍楼{% else %}添加宿舍楼{% endif %}</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group"><label>楼名</label><input name="name" required value="{{ building.name|default:"" }}"></div>
+        <div class="form-group"><label>地址</label><input name="address" value="{{ building.address|default:"" }}"></div>
+        <div class="form-group"><label>楼层数</label><input name="floors" type="number" value="{{ building.floors|default:6 }}"></div>
+        <div class="form-group"><label>描述</label><textarea name="description">{{ building.description|default:"" }}</textarea></div>
+        <button type="submit" class="btn btn-primary">保存</button>
+        <a href="{% url 'building_list' %}" class="btn" style="background:#aaa;color:#fff;">取消</a>
+    </form>
+</div>
+{% endblock %}

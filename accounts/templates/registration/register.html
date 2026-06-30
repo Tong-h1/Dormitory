@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册 - 宿舍管理系统</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .login-box { background: #fff; border-radius: 12px; padding: 40px; width: 380px; box-shadow: 0 8px 32px rgba(0,0,0,0.15); }
+        .login-box h2 { text-align: center; margin-bottom: 28px; color: #333; font-size: 22px; }
+        .login-box .form-group { margin-bottom: 18px; }
+        .login-box label { display: block; margin-bottom: 6px; font-size: 14px; color: #555; }
+        .login-box input { width: 100%; padding: 10px 14px; border: 1px solid #d9d9d9; border-radius: 6px; font-size: 14px; outline: none; transition: border 0.2s; }
+        .login-box input:focus { border-color: #667eea; box-shadow: 0 0 0 2px rgba(102,126,234,0.2); }
+        .login-box button { width: 100%; padding: 10px; background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; border: none; border-radius: 6px; font-size: 15px; cursor: pointer; margin-top: 8px; transition: opacity 0.2s; }
+        .login-box button:hover { opacity: 0.9; }
+        .login-box .links { text-align: center; margin-top: 16px; font-size: 14px; }
+        .login-box .links a { color: #667eea; text-decoration: none; }
+        .login-box .links a:hover { text-decoration: underline; }
+        .login-box .error { background: #fff2f0; border: 1px solid #ffccc7; padding: 8px 12px; border-radius: 6px; color: #ff4d4f; font-size: 13px; margin-bottom: 16px; text-align: center; }
+        h1 { text-align: center; margin-bottom: 32px; color: #fff; font-size: 26px; }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>🏠 宿舍住宿管理系统</h1>
+        <div class="login-box">
+            <h2>用户注册</h2>
+            {% if messages %}
+                {% for msg in messages %}
+                <div class="error">{{ msg }}</div>
+                {% endfor %}
+            {% endif %}
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>用户名</label>
+                    <input name="username" required placeholder="请设置用户名">
+                </div>
+                <div class="form-group">
+                    <label>密码</label>
+                    <input name="password" type="password" required placeholder="请设置密码">
+                </div>
+                <div class="form-group">
+                    <label>确认密码</label>
+                    <input name="password2" type="password" required placeholder="请再次输入密码">
+                </div>
+                <button type="submit">注 册</button>
+            </form>
+            <div class="links">
+                已有账号？<a href="{% url 'login' %}">立即登录</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

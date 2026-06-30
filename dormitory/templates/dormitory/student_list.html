@@ -1,0 +1,32 @@
+﻿{% extends "base.html" %}
+{% block title %}学生列表{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="toolbar">
+        <h2>👨‍🎓 学生列表</h2>
+        <a href="{% url 'student_create' %}" class="btn btn-primary">➕ 添加学生</a>
+    </div>
+    <table>
+        <thead><tr><th>学号</th><th>姓名</th><th>性别</th><th>电话</th><th>院系</th><th>专业</th><th>入学年份</th><th>操作</th></tr></thead>
+        <tbody>
+            {% for s in students %}
+            <tr>
+                <td>{{ s.student_id }}</td>
+                <td><strong>{{ s.name }}</strong></td>
+                <td>{{ s.gender }}</td>
+                <td>{{ s.phone|default:"-" }}</td>
+                <td>{{ s.department|default:"-" }}</td>
+                <td>{{ s.major|default:"-" }}</td>
+                <td>{{ s.enrollment_year|default:"-" }}</td>
+                <td>
+                    <a href="{% url 'student_edit' s.pk %}" class="btn btn-sm btn-primary">编辑</a>
+                    <a href="{% url 'student_delete' s.pk %}" class="btn btn-sm btn-danger" onclick="return confirm('确定删除?')">删除</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="8" style="text-align:center;color:#999;">暂无数据</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

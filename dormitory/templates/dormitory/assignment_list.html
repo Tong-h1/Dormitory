@@ -1,0 +1,33 @@
+﻿{% extends "base.html" %}
+{% block title %}住宿分配列表{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="toolbar">
+        <h2>📋 住宿分配列表</h2>
+        <a href="{% url 'assignment_create' %}" class="btn btn-success">➕ 分配住宿</a>
+    </div>
+    <table>
+        <thead><tr><th>学生</th><th>学号</th><th>宿舍</th><th>入住日期</th><th>退宿日期</th><th>状态</th><th>操作</th></tr></thead>
+        <tbody>
+            {% for a in assignments %}
+            <tr>
+                <td>{{ a.student.name }}</td>
+                <td>{{ a.student.student_id }}</td>
+                <td>{{ a.dormitory }}</td>
+                <td>{{ a.check_in_date|date:"Y-m-d" }}</td>
+                <td>{{ a.check_out_date|date:"Y-m-d"|default:"-" }}</td>
+                <td>{% if a.is_active %}<span style="color:#52c41a;">在住</span>{% else %}<span style="color:#999;">已退宿</span>{% endif %}</td>
+                <td>
+                    {% if a.is_active %}
+                    <a href="{% url 'assignment_checkout' a.pk %}" class="btn btn-sm btn-warning" onclick="return confirm('确认退宿?')">退宿</a>
+                    {% endif %}
+                    <a href="{% url 'assignment_delete' a.pk %}" class="btn btn-sm btn-danger" onclick="return confirm('确定删除?')">删除</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="7" style="text-align:center;color:#999;">暂无分配记录</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

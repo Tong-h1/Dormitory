@@ -1,0 +1,31 @@
+﻿{% extends "base.html" %}
+{% block title %}宿舍楼列表{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="toolbar">
+        <h2>🏢 宿舍楼列表</h2>
+        <a href="{% url 'building_create' %}" class="btn btn-primary">➕ 添加宿舍楼</a>
+    </div>
+    <table>
+        <thead><tr><th>编号</th><th>楼名</th><th>地址</th><th>楼层数</th><th>描述</th><th>创建时间</th><th>操作</th></tr></thead>
+        <tbody>
+            {% for b in buildings %}
+            <tr>
+                <td>{{ b.id }}</td>
+                <td><strong>{{ b.name }}</strong></td>
+                <td>{{ b.address|default:"-" }}</td>
+                <td>{{ b.floors }}层</td>
+                <td>{{ b.description|truncatechars:15|default:"-" }}</td>
+                <td>{{ b.created_at|date:"Y-m-d" }}</td>
+                <td>
+                    <a href="{% url 'building_edit' b.pk %}" class="btn btn-sm btn-primary">编辑</a>
+                    <a href="{% url 'building_delete' b.pk %}" class="btn btn-sm btn-danger" onclick="return confirm('确定删除?')">删除</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="7" style="text-align:center;color:#999;">暂无数据，请添加宿舍楼</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

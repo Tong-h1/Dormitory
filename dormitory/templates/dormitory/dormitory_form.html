@@ -1,0 +1,29 @@
+﻿{% extends "base.html" %}
+{% block title %}{% if is_edit %}编辑{% else %}添加{% endif %}宿舍房间{% endblock %}
+{% block content %}
+<div class="card">
+    <h2>{% if is_edit %}编辑宿舍房间{% else %}添加宿舍房间{% endif %}</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="form-group"><label>所属楼栋</label>
+                <select name="building" required>
+                    {% for b in buildings %}<option value="{{ b.id }}" {% if is_edit and dorm.building_id == b.id %}selected{% endif %}>{{ b.name }}</option>{% endfor %}
+                </select>
+            </div>
+            <div class="form-group"><label>房间号</label><input name="room_number" required value="{{ dorm.room_number|default:"" }}"></div>
+        </div>
+        <div class="form-row">
+            <div class="form-group"><label>楼层</label><input name="floor" type="number" required value="{{ dorm.floor|default:1 }}"></div>
+            <div class="form-group"><label>容量（人数）</label><input name="capacity" type="number" required value="{{ dorm.capacity|default:4 }}"></div>
+        </div>
+        <div class="form-row">
+            <div class="form-group"><label>当前人数</label><input name="current_count" type="number" value="{{ dorm.current_count|default:0 }}"></div>
+            <div class="form-group"><label><input name="is_active" type="checkbox" {% if is_edit and dorm.is_active %}checked{% elif not is_edit %}checked{% endif %}> 是否可用</label></div>
+        </div>
+        <div class="form-group"><label>描述</label><textarea name="description">{{ dorm.description|default:"" }}</textarea></div>
+        <button type="submit" class="btn btn-primary">保存</button>
+        <a href="{% url 'dormitory_list' %}" class="btn" style="background:#aaa;color:#fff;">取消</a>
+    </form>
+</div>
+{% endblock %}

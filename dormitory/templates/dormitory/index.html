@@ -1,0 +1,40 @@
+﻿{% extends "base.html" %}
+{% block title %}系统首页 - 宿舍管理系统{% endblock %}
+{% block content %}
+<div class="stats">
+    <div class="stat-item"><div class="num">{{ building_count }}</div><div class="label">宿舍楼</div></div>
+    <div class="stat-item"><div class="num">{{ dormitory_count }}</div><div class="label">房间数</div></div>
+    <div class="stat-item"><div class="num">{{ student_count }}</div><div class="label">学生总数</div></div>
+    <div class="stat-item"><div class="num">{{ active_assignments }}</div><div class="label">在住人数</div></div>
+    <div class="stat-item"><div class="num" style="color:{% if pending_repairs > 0 %}#ff4d4f{% else %}#52c41a{% endif %}">{{ pending_repairs }}</div><div class="label">待处理报修</div></div>
+</div>
+<div class="card">
+    <h2>快速入口</h2>
+    <div style="display:flex; gap:12px; flex-wrap:wrap;">
+        <a href="{% url 'building_create' %}" class="btn btn-primary">➕ 添加宿舍楼</a>
+        <a href="{% url 'dormitory_create' %}" class="btn btn-primary">➕ 添加房间</a>
+        <a href="{% url 'student_create' %}" class="btn btn-primary">➕ 添加学生</a>
+        <a href="{% url 'assignment_create' %}" class="btn btn-success">➕ 分配住宿</a>
+        <a href="{% url 'repair_create' %}" class="btn btn-warning">➕ 提交报修</a>
+    </div>
+</div>
+<div class="card">
+    <h2>最近报修</h2>
+    <table>
+        <thead><tr><th>宿舍</th><th>报修人</th><th>问题</th><th>状态</th><th>日期</th></tr></thead>
+        <tbody>
+            {% for r in recent_repairs %}
+            <tr>
+                <td>{{ r.dormitory }}</td>
+                <td>{{ r.reporter_name }}</td>
+                <td>{{ r.description|truncatechars:20 }}</td>
+                <td><span class="badge badge-{{ r.status }}">{{ r.get_status_display }}</span></td>
+                <td>{{ r.report_date|date:"Y-m-d" }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5" style="text-align:center;color:#999;">暂无报修记录</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
